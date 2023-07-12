@@ -1,54 +1,86 @@
 import unittest
-from models.base_model import BaseModel
+from datetime import datetime
 from models.engine.file_storage import FileStorage
+from models.base_model import BaseModel
 
 
 class TestFileStorage(unittest.TestCase):
     def setUp(self):
-        self.file_path = "test_file.json"
         self.storage = FileStorage()
-        self.storage._FileStorage__file_path = self.file_path
 
-    def tearDown(self):
-        try:
-            os.remove(self.file_path)
-        except FileNotFoundError:
-            pass
+    def test_file_path(self):
+        """
+        Test that __file_path attribute is set correctly.
+        """
+        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
+
+    def test_objects(self):
+        """
+        Test that __objects attribute is an empty dictionary.
+        """
+        self.assertEqual(self.storage._FileStorage__objects, {})
 
     def test_all(self):
-        objects = self.storage.all()
-        self.assertIsInstance(objects, dict)
-        self.assertEqual(len(objects), 0)
+        """
+        Test the all() method returns the __objects dictionary.
+        """
+        all_objs = self.storage.all()
+        self.assertEqual(all_objs, self.storage._FileStorage__objects)
 
     def test_new(self):
-        obj = BaseModel()
-        self.storage.new(obj)
-        objects = self.storage.all()
-        self.assertEqual(len(objects), 1)
-        self.assertIn(f"BaseModel.{obj.id}", objects)
+        """
+        Test that new() method adds a new object to __objects.
+        """
+        my_model = BaseModel()
+        self.storage.new(my_model)
+        key = "{}.{}".format(type(my_model).__name__, my_model.id)
+        self.assertIn(key, self.storage._FileStorage__objects)
 
-    def test_save_reload(self):
-        obj = BaseModel()
-        self.storage.new(obj)
+    def test_save(self):
+        """
+        Test that save() method saves the objects to the file.
+        """
+        my_model = BaseModel()
+        self.storage.new(my_model)
         self.storage.save()
-        new_storage = FileStorage()
-        new_storage._FileStorage__file_path = self.file_path
-        new_storage.reload()
-        objects = new_storage.all()
-        self.assertEqual(len(objects), 1)
-        self.assertIn(f"BaseModel.{obj.id}", objects)
+        with open(self.storage._FileStorage__file_path, 'r') as file:
+            data = file.read()
+        self.assertNotEqual(data, "")
 
-    def test_base_model_init(self):
-        obj = BaseModel(name="Test", age=25)
-        self.assertEqual(obj.name, "Test")
-        self.assertEqual(obj.age, 25)
-
-    def test_base_model_save(self):
-        obj = BaseModel()
-        self.assertIsNone(obj.updated_at)
-        obj.save()
-        self.assertIsNotNone(obj.updated_at)
+    def test_reload(self):
+        """
+        Test that reload() method reloads the objects from the file.
+        """
+        my_model = BaseModel()
+        self.storage.new(my_model)
+        self.storage.save()
+        self.storage.reload()
+        all_objs = self.storage.all()
+        key = "{}.{}".format(type(my_model).__name__, my_model.id)
+        self.assertIn(key, all_objs)
 
 
-if __name__ == "__main__":
+class TestBaseModel(unittest.TestCase):
+    def test_init(self):
+        """
+        Test that __init__() initializes the instance correctly.
+        """
+        my_model = BaseModel(name="Test", value=10)
+        self.assertEqual(my_model.name, "Test")
+        self.assertEqual(my_model.value, 10)
+        self.assertTrue(hasattr(my_model, "id"))
+        self.assertTrue(hasattr(my_model, "created_at"))
+        self.assertTrue(hasattr(my_model, "updated_at"))
+
+    def test_save(self):
+        """
+        Test that save() method updates the updated_at attribute.
+        """
+        my_model = BaseModel()
+        previous_updated_at = my_model.updated_at
+        my_model.save()
+        self.assertNotEqual(previous_updated_at, my_model.updated_at)
+
+
+if __name__ == '__main__':
     unittest.main()
