@@ -18,7 +18,8 @@ class TestBaseModel(unittest.TestCase):
 
     def setUpClass(self):
         """Method set up instances"""
-        pass
+        
+
 
     def test_to_dict(self):
         """test the public instance method to_dict()"""
