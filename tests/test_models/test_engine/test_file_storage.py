@@ -33,7 +33,8 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(len(objects), 2)
         self.assertIn(f'{obj1.__class__.__name__}.{obj1.id}', objects)
         self.assertIn(f'{obj2.__class__.__name__}.{obj2.id}', objects)
-def test_save(self):
+    
+    def test_save(self):
         # Agrega un objeto a la instancia de FileStorage
         obj = BaseModel()
         self.file_storage.new(obj)
@@ -48,7 +49,7 @@ def test_save(self):
             # Comprueba que se llamó a json.dump con los datos correctos
             mock_file().write.assert_called_once_with(json.dumps({f'{obj.__class__.__name__}.{obj.id}': obj.to_dict()}))
 
-def test_reload(self):
+    def test_reload(self):
         # Crea un archivo JSON con un objeto guardado
         data = {
             'BaseModel.123456': {
