@@ -1,48 +1,54 @@
 import unittest
-import json
-import os
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
 
 class TestFileStorage(unittest.TestCase):
-
     def setUp(self):
-        self.file_path = "file.json"
-        # Create an instance of the FileStorage class
+        self.file_path = "test_file.json"
         self.storage = FileStorage()
+        self.storage._FileStorage__file_path = self.file_path
 
     def tearDown(self):
-        # Remove the file created during testing
-        if os.path.exists(self.file_path):
+        try:
             os.remove(self.file_path)
+        except FileNotFoundError:
+            pass
 
-    def test_store_first_object(self):
-        # Create a BaseModel instance
+    def test_all(self):
+        objects = self.storage.all()
+        self.assertIsInstance(objects, dict)
+        self.assertEqual(len(objects), 0)
+
+    def test_new(self):
         obj = BaseModel()
-        # Store the object using the FileStorage instance
+        self.storage.new(obj)
+        objects = self.storage.all()
+        self.assertEqual(len(objects), 1)
+        self.assertIn(f"BaseModel.{obj.id}", objects)
+
+    def test_save_reload(self):
+        obj = BaseModel()
         self.storage.new(obj)
         self.storage.save()
+        new_storage = FileStorage()
+        new_storage._FileStorage__file_path = self.file_path
+        new_storage.reload()
+        objects = new_storage.all()
+        self.assertEqual(len(objects), 1)
+        self.assertIn(f"BaseModel.{obj.id}", objects)
 
-        # Load the stored data from the file
-        with open(self.file_path, "r") as file:
-            data = json.load(file)
+    def test_base_model_init(self):
+        obj = BaseModel(name="Test", age=25)
+        self.assertEqual(obj.name, "Test")
+        self.assertEqual(obj.age, 25)
 
-        # Verify that the object was stored correctly
-        self.assertIn(f"BaseModel.{obj.id}", data)
-
-    def test_all_method(self):
-        # Create a BaseModel instance
+    def test_base_model_save(self):
         obj = BaseModel()
-        self.storage.new(obj)
+        self.assertIsNone(obj.updated_at)
+        obj.save()
+        self.assertIsNotNone(obj.updated_at)
 
-        # Get all objects using the all() method
-        all_objects = self.storage.all()
 
-        # Verify that the object is in the returned dictionary
-        self.assertIn(f"BaseModel.{obj.id}", all_objects)
-
-    # Add more test cases for other methods...
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
