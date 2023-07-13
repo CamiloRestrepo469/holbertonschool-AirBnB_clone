@@ -1,43 +1,53 @@
 #!/usr/bin/python3
-import cmd
+"""Create a Class HBNBCommand"""
 
-"""create a class HBNBCommand"""
+import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-    """Defines the BnB command interpreter.
-
-    Attributes:
-        prompt (str): The command prompt.
+    """
+    Entry point of the command interpreter.
     """
 
-    prompt = "(hbnb) "
+    prompt = '(hbnb) '
 
     def do_quit(self, arg):
-        """Quit command to exit the program"""
+        """
+        Quit the console.
+        """
         return True
 
     def do_EOF(self, arg):
-        """Exit the program when End-of-File (EOF) is reached"""
-        print()  # Print a newline before exiting
+        """
+        Exit the console with EOF (Ctrl+D).
+        """
+        print()
         return True
 
     def emptyline(self):
-        """Do nothing when an empty line is entered"""
+        """
+        Do nothing when an empty line is entered.
+        """
         pass
 
     def help_quit(self):
-        """Quit the program"""
+        """
+        Display help message for quit command.
+        """
         print("Quit command to exit the program")
 
     def help_EOF(self):
-        """Quit the program when"""
-        print("exit with an empty line")
+        """
+        Display help message for EOF command.
+        """
+        print("Exit the console with EOF (Ctrl+D).")
 
     def help_help(self):
-        """Quit the program"""
-        print("help with an empty line")
+        """
+        Display help message for help command.
+        """
+        print("Display help information.")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     HBNBCommand().cmdloop()
