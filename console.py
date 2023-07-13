@@ -3,7 +3,7 @@
 
 import cmd
 from models.base_model import BaseModel
-# from models.user import User
+from models.user import User
 # from models.place import Place
 # from models.state import State
 # from models.city import City
@@ -14,7 +14,7 @@ from typing import Tuple, Optional
 import inspect
 
 class_names_str = [
-    "BaseModel"
+    "BaseModel", "User"
     ]
 all_data = storage.all()
 
