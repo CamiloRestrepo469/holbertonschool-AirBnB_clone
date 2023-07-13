@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
 import cmd
+"""create a class """
 
 
 class HBNBCommand(cmd.Cmd):
-    """Defines the HolbertonBnB command interpreter.
+    """Defines the BnB command interpreter.
 
     Attributes:
         prompt (str): The command prompt.
@@ -25,12 +26,15 @@ class HBNBCommand(cmd.Cmd):
         pass
     
     def help_quit(self):
+        """Quit the program"""
         print("Quit command to exit the program")
     
     def help_EOF(self):
+        """Quit the program when"""
         print("exit with an empty line")
         
     def help_help(self):
+        """Quit the program"""
         print("help with an empty line")
         
 
