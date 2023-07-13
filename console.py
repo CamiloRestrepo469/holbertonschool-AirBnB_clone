@@ -49,5 +49,49 @@ class HBNBCommand(cmd.Cmd):
         print("Display help information.")
 
 
+def print_error(message):
+    """
+    Helper function to print error messages.
+    """
+    print("Error: {}".format(message))
+
+def show_command(arguments):
+    """
+    Implementation of the 'show' command.
+    """
+    if len(arguments) == 0:
+        print_error("class name missing")
+        return
+    class_name = arguments[0]
+    if class_name not in class_dict:
+        print_error("class doesn't exist")
+        return
+    if len(arguments) == 1:
+        print_error("instance id missing")
+        return
+    instance_id = arguments[1]
+    try:
+        instance = class_dict[class_name].get(instance_id)
+        print(instance)
+    except KeyError:
+        print_error("no instance found")
+
+
+
+    def do_show(self, arg):
+        """
+        Display the string representation of an instance.
+        Usage: show <class_name> <id>
+        """
+        arguments = arg.split()
+        show_command(arguments)
+
+    def help_show(self):
+        """
+        Display help message for show command.
+        """
+        print("Display the string representation of an instance.")
+        print("Usage: show <class_name> <id>")
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
