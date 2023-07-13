@@ -5,57 +5,42 @@ import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-    """
-    Entry point of the command interpreter.
-    """
+    """Command-line interface for the AIRBNB project."""
 
-    prompt = '(hbnb) '
+    # intro = "Welcome to the AIRBNB console command"
+    prompt = "(hbnb) "
 
-    def do_quit(self, arg):
+    def do_quit(self, args: str) -> bool:
         """
-        Quit the console.
+        Quit command to exit the program.
         """
         return True
 
-    def do_EOF(self, arg):
+    def do_EOF(self, args: str) -> bool:
         """
-        Exit the console with EOF (Ctrl+D).
+        Handle the end-of-file event (Ctrl+D).
         """
-        print()
         return True
 
-    def emptyline(self) -> None:
+    def do_create(self, args: str) -> None:
         """
-        Handle empty lines
+        Create a new instance of a given class.
         """
-        pass
+        arg_list = args.split()
+        if not arg_list:
+            print("** class name missing **")
+            return
+        class_name = arg_list[0]
+        if class_name not in class_names_str:
+            print("** class doesn't exist **")
+            return
 
-    def help_quit(self):
-        """
-        Display help message for quit command.
-        """
-        print("Quit command to exit the program")
+        # Process
+        new_instance = eval(class_name)()
 
-    def help_EOF(self):
-        """
-        Display help message for EOF command.
-        """
-        print("Exit the console with EOF (Ctrl+D).")
+        new_instance.save()
+        print(new_instance.id)
 
-    def help_help(self):
-        """
-        Display help message for help command.
-        """
-        print("Display help information.")
-
-
-    def print_error(message):
-        """
-        Helper function to print error messages.
-        """
-        print("Error: {}".format(message))
-
-#def show
     def do_show(self, args: str) -> None:
         """
         Show the string representation of an instance.
@@ -85,9 +70,6 @@ class HBNBCommand(cmd.Cmd):
 
         print(model)
 
-# end def show
-
-
     def do_all(self, args: Optional[str]) -> None:
         """
         Show the string representation of all instances of a given class.
@@ -106,67 +88,6 @@ class HBNBCommand(cmd.Cmd):
                    if args == "" or str(obj).startswith(f"[{class_name}]")]
 
         print(objects)
-
-    def do_update(self, args: str) -> None:
-        """
-        Update an instance based on the class name and ID.
-        """
-        arg_list = args.split()
-        if not arg_list:
-            print("** class name missing **")
-            return
-
-        class_name = arg_list[0]
-
-        if class_name not in class_names_str:
-            print("** class doesn't exist **")
-            return
-        if len(arg_list) < 2:
-            print("** instance id missing **")
-            return
-
-        instance_id = arg_list[1]
-
-        instance = all_data.get(f"{class_name}.{instance_id}", None)
-
-        if instance is None:
-            print("** no instance found **")
-            return
-
-        if len(arg_list) < 3:
-            print("** attribute name missing **")
-            return
-
-        if len(arg_list) < 4:
-            print("** value missing **")
-            return
-
-        is_dict = False
-        for i in args:
-            if i == '{':
-                is_dict = True
-
-        if is_dict:
-            dicty = "".join(arg_list[2:])
-            dictionary = eval(dicty)
-
-            if (isinstance(dictionary, dict)):
-                for key, value in dictionary.items():
-                    setattr(instance, key, value)
-
-                instance.save()
-                return
-
-        attribute_name = arg_list[2]
-        attribute_value = eval(arg_list[3])
-
-        if attribute_name in ["id", "created_at", "updated_at"]:
-            print("** this attribute can't be change **")
-            return
-
-        setattr(instance, attribute_name, attribute_value)
-
-        instance.save()
 
     def do_destroy(self, args: str) -> None:
         """
