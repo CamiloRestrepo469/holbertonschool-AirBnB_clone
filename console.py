@@ -93,5 +93,34 @@ def show_command(arguments):
         print("Display the string representation of an instance.")
         print("Usage: show <class_name> <id>")
 
+    def do_destroy(self, args: str) -> None:
+        """
+        Delete an instance based on the class name and ID.
+        """
+        arg_list = args.split()
+        if not arg_list:
+            print("** class name missing **")
+            return
+
+        class_name = arg_list[0]
+
+        if class_name not in class_names_str:
+            print("** class doesn't exist **")
+            return
+        if len(arg_list) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = arg_list[1]
+
+        # Process
+        try:
+            all_data.pop(f"{class_name}.{instance_id}")
+        except KeyError:
+            print("** no instance found **")
+            return
+
+        storage.save()
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
