@@ -13,6 +13,11 @@ from models import storage
 from typing import Tuple, Optional
 import inspect
 
+class_names_str = [
+    "BaseModel"
+    ]
+all_data = storage.all()
+
 
 class HBNBCommand(cmd.Cmd):
     """Command-line interface for the AIRBNB project."""
