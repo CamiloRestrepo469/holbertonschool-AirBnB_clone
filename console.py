@@ -24,9 +24,9 @@ class HBNBCommand(cmd.Cmd):
         print()
         return True
 
-    def emptyline(self):
+    def emptyline(self) -> None:
         """
-        Do nothing when an empty line is entered.
+        Handle empty lines
         """
         pass
 
