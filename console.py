@@ -56,43 +56,34 @@ class HBNBCommand(cmd.Cmd):
         print("Error: {}".format(message))
 
 #def show
-    def show_command(arguments):
+    def do_show(self, args: str) -> None:
         """
-        Implementation of the 'show' command.
+        Show the string representation of an instance.
         """
-        if len(arguments) == 0:
-            print_error("class name missing")
+        arg_list = args.split()
+        if not arg_list:
+            print("** class name missing **")
             return
-        class_name = arguments[0]
-        if class_name not in class_dict:
-            print_error("class doesn't exist")
+
+        class_name = arg_list[0]
+
+        if class_name not in class_names_str:
+            print("** class doesn't exist **")
             return
-        if len(arguments) == 1:
-            print_error("instance id missing")
+        if len(arg_list) < 2:
+            print("** instance id missing **")
             return
-        instance_id = arguments[1]
-        try:
-            instance = class_dict[class_name].get(instance_id)
-            print(instance)
-        except KeyError:
-            print_error("no instance found")
 
+        instance_id = arg_list[1]
 
+        # Process
+        model = all_data.get(f"{class_name}.{instance_id}", None)
 
-    def do_show(self, arg):
-        """
-        Display the string representation of an instance.
-        Usage: show <class_name> <id>
-        """
-        arguments = arg.split()
-        show_command(arguments)
+        if model is None:
+            print("** no instance found **")
+            return
 
-    def help_show(self):
-        """
-        Display help message for show command.
-        """
-        print("Display the string representation of an instance.")
-        print("Usage: show <class_name> <id>")
+        print(model)
 
 # end def show
 
