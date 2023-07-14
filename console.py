@@ -17,7 +17,7 @@ import shlex
 import re
 
 class_names_str = ["Amenity", "City",
-              "Place", "State",
+              "Place", "Review","State",
     "BaseModel", "User"
     ]
 all_data = storage.all()
