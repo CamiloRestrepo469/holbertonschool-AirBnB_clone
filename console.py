@@ -26,8 +26,8 @@ all_data = storage.all()
 class HBNBCommand(cmd.Cmd):
     """Command-line interface for the AIRBNB project."""
     
-    """classe = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-              "Place": Place, "Review": Review, "State": State, "User": User}"""
+    classe = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+              "Place": Place, "Review": Review, "State": State, "User": User}
 
 
     # intro = "Welcome to the AIRBNB console command"
@@ -45,144 +45,162 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
-    def do_create(self, line):
-        if line == "" or line is None:
+    def do_create(self, args: str) -> None:
+        """
+        Create a new instance of a given class.
+        """
+        arg_list = args.split()
+        if not arg_list:
             print("** class name missing **")
-        elif line in self.classe.keys():
-            new_instance = self.classe[line]()
-            new_instance.save()
-            print(new_instance.id)
-        else:
+            return
+        class_name = arg_list[0]
+        if class_name not in class_names_str:
             print("** class doesn't exist **")
-            
-    def emptyline(self):
-        """any action"""
-        pass
-    
-    def main():
-        """Don't executed when imported"""
-        pass
+            return
 
+        # Process
+        new_instance = eval(class_name)()
 
-    def do_show(self, line):
-        tokens = line.split()
-        if len(tokens) == 0:
+        new_instance.save()
+        print(new_instance.id)
+
+    def do_show(self, args: str) -> None:
+        """
+        Show the string representation of an instance.
+        """
+        arg_list = args.split()
+        if not arg_list:
             print("** class name missing **")
-        else:
-            if tokens[0] in self.classe.keys():
-                if len(tokens) == 1:
-                    print("** instance id missing **")
-                else:
-                    objects = storage.all()
-                    flag = None
-                    for key in objects.keys():
-                        if str(tokens[1]) in key:
-                            flag = key
-                    if flag:
-                        print(objects[flag])
-                    else:
-                        print("** no instance found **")
-            else:
-                print("** class doesn't exist **")
+            return
 
-    def do_all(self, line=""):
-        """prints all string representation of all instances"""
-        objects = storage.all()
-        list_objects = list()
-        if line == "":
-            for value in objects.values():
-                list_objects.append(str(value))
-            print(list_objects)
-        elif line in self.classe.keys():
-            for key, value in objects.items():
-                if line in key:
-                    list_objects.append(str(value))
-            print(list_objects)
-        else:
+        class_name = arg_list[0]
+
+        if class_name not in class_names_str:
             print("** class doesn't exist **")
-
-    def do_destroy(self, line):
-        tokens = line.split()
-        if len(tokens) == 0:
-            print("** class name missing **")
-        else:
-            if tokens[0] in self.classe.keys():
-                if len(tokens) == 1:
-                    print("** instance id missing **")
-                else:
-                    objects = storage.all()
-                    flag = None
-                    for key in objects.keys():
-                        if str(tokens[1]) in key:
-                            flag = key
-                    if flag:
-                        del(objects[flag])
-                        storage.save()
-                    else:
-                        print("** no instance found **")
-            else:
-                print("** class doesn't exist **")
-
-    def do_update(self, line):
-        """update an instance based on the class id"""
-        tokens = shlex.split(line)
-        integers = ['number_rooms', 'number_bathrooms',
-                    'max_guest', 'price_by_night']
-        floats = ['latitude', 'longitude']
-        if len(tokens) == 0:
-            print("** class name missing **")
-        elif len(tokens) == 1 and tokens[0] in self.classe.keys():
+            return
+        if len(arg_list) < 2:
             print("** instance id missing **")
-        elif tokens[0] not in self.classe.keys():
+            return
+
+        instance_id = arg_list[1]
+
+        # Process
+        model = all_data.get(f"{class_name}.{instance_id}", None)
+
+        if model is None:
+            print("** no instance found **")
+            return
+
+        print(model)
+
+    def do_all(self, args: Optional[str]) -> None:
+        """
+        Show the string representation of all instances of a given class.
+        """
+        arg_list = args.split()
+        if arg_list and arg_list[0] not in class_names_str:
             print("** class doesn't exist **")
-        elif len(tokens) == 2:
+            return
+        try:  # if only write all
+            class_name = arg_list[0]
+        except Exception:
+            pass
+
+        # Process
+        objects = [str(obj) for obj in all_data.values()  # if only write all
+                   if args == "" or str(obj).startswith(f"[{class_name}]")]
+
+        print(objects)
+
+    def do_destroy(self, args: str) -> None:
+        """
+        Delete an instance based on the class name and ID.
+        """
+        arg_list = args.split()
+        if not arg_list:
+            print("** class name missing **")
+            return
+
+        class_name = arg_list[0]
+
+        if class_name not in class_names_str:
+            print("** class doesn't exist **")
+            return
+        if len(arg_list) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = arg_list[1]
+
+        # Process
+        try:
+            all_data.pop(f"{class_name}.{instance_id}")
+        except KeyError:
+            print("** no instance found **")
+            return
+
+        storage.save()
+
+    def do_update(self, args: str) -> None:
+        """
+        Update an instance based on the class name and ID.
+        """
+        arg_list = args.split()
+        if not arg_list:
+            print("** class name missing **")
+            return
+
+        class_name = arg_list[0]
+
+        if class_name not in class_names_str:
+            print("** class doesn't exist **")
+            return
+        if len(arg_list) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = arg_list[1]
+
+        instance = all_data.get(f"{class_name}.{instance_id}", None)
+
+        if instance is None:
+            print("** no instance found **")
+            return
+
+        if len(arg_list) < 3:
             print("** attribute name missing **")
-        elif len(tokens) == 3:
+            return
+
+        if len(arg_list) < 4:
             print("** value missing **")
-        else:
-            objects = storage.all()
-            flag = 0
-            for k in objects.keys():
-                if str(tokens[1]) in k:
-                    if tokens[2] in integers:
-                        tokens[3] = int(tokens[3])
-                    elif tokens[2] in floats:
-                        tokens[3] = float(tokens[3])
-                    setattr(objects[k], tokens[2], tokens[3])
-                    objects[k].save()
-                    flag = 1
-            if flag == 0:
-                print("** no instance found **")
-                
-    def analyze(self, value):
-        """
-        Analyze the value and check if it
-        need to be converted to int or float
-        """
-        if value.isdigit():
-            return int(value)
-        if value.replace(".", "", 1).isdigit():
-            return float(value)
-        return value
+            return
 
-    def default(self, line):
-        """
-        If the command is not recognized, check
-        if the syntax is: <class name>.<method name> or not,
-        if the class name and the method name exists will be executed
-        """
-        if "." in line:
-            command = re.split(r"\.|\(|\)", line)
+        is_dict = False
+        for i in args:
+            if i == '{':
+                is_dict = True
 
-            if command[0] in self.classes:
-                if command[1] == "show":
-                    self.do_show(f"{command[0]} {command[2][1:-1]}")
-                elif command[1] == "destroy":
-                    self.do_destroy(f"{command[0]} {command[2][1:-1]}")
-                elif command[1] == "count":
-                    print(len(self.get_instances(command[0])))
-                elif command[1] == "all":
-                    print(self.get_instances(command[0]))
+        if is_dict:
+            dicty = "".join(arg_list[2:])
+            dictionary = eval(dicty)
+
+            if (isinstance(dictionary, dict)):
+                for key, value in dictionary.items():
+                    setattr(instance, key, value)
+
+                instance.save()
+                return
+
+        attribute_name = arg_list[2]
+        attribute_value = eval(arg_list[3])
+
+        if attribute_name in ["id", "created_at", "updated_at"]:
+            print("** this attribute can't be change **")
+            return
+
+        setattr(instance, attribute_name, attribute_value)
+
+        instance.save()
 
 
 if __name__ == '__main__':
