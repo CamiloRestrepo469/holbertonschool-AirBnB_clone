@@ -4,6 +4,7 @@ from datetime import datetime
 import models
 
 """create a new class BaseModel"""
+date_time = "%Y-%m-%dT%H:%M:%S.%f"
 
 
 class BaseModel:

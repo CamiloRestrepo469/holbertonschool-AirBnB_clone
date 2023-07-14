@@ -12,11 +12,13 @@ from models.user import User
 from datetime import datetime
 
 class FileStorage:
+    
+    classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+              "Place": Place, "Review": Review, "State": State, "User": User}
+    
     __file_path = "file.json"
     __objects = {}
-    classe = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-              "Place": Place, "Review": Review, "State": State, "User": User}
-
+    
     def all(self):
         return self.__objects
 
@@ -33,11 +35,22 @@ class FileStorage:
             json.dump(data, file)
 
     def reload(self):
-        """ deserializes the JSON file to __objects"""
+        """
+        Deserializes the JSON file to __objects (only if the JSON file
+        (__file_path) exists;
+        otherwise, do nothing. If the file doesn't exist, no exception
+        should be raised).
+        """
         try:
-            with open(self.__file-path, 'r') as file:
+            with open(self.__file_path, 'r') as file:
                 data = json.load(file)
-            for key in data: classmethod[data[key]["__class__"]](**data[key])
+                for key, value in data.items():
+                    class_name, obj_id = key.split('.')
+                    class_obj = globals().get(class_name)
+                    if class_name in self.classes:
+                        class_obj = self.classes[class_name]
+                        instance = class_obj(**value)
+                        self.new(instance)
         except AttributeError:
             pass
        

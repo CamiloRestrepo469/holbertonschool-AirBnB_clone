@@ -27,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
     """Command-line interface for the AIRBNB project."""
     
     classe = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-              "Place": Place, "State": State, "User": User}
+              "Place": Place, "State": State, "User": User, 'Review': Review}
 
 
     # intro = "Welcome to the AIRBNB console command"
