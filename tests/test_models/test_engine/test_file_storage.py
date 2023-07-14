@@ -64,13 +64,28 @@ class TestFileStorage(unittest.TestCase):
                 {f'{obj.__class__.__name__}.{obj.id}': obj.to_dict()}))
 
     def test_reload(self):
-        self.assertEqual(self.storage.reload(), None)
-        os.remove('file.json')
+        # Crea un archivo JSON con un objeto guardado
+        data = {
+            'BaseModel.123456': {
+                '__class__': 'BaseModel',
+                'id': '123456',
+                'created_at': datetime.now().isoformat(),
+                'updated_at': datetime.now().isoformat(),
+                # ...otros atributos...
+            }
+        }
+        with open(self.file_storage._FileStorage__file_path, 'w') as file:
+            json.dump(data, file)
+
+        # Llama al método reload() para cargar los objetos en la instancia de FileStorage
+        self.file_storage.reload()
 
         # Comprueba que el objeto se cargó correctamente
         objects = self.file_storage.all()
         self.assertEqual(len(objects), 3)
-
+        self.assertIn('BaseModel.123456', objects)
+        self.assertIsInstance(objects['BaseModel.123456'], BaseModel)
+        self.assertEqual(objects['BaseModel.123456'].id, '123456')
 
 if __name__ == '__main__':
     unittest.main()
