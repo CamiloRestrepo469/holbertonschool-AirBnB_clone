@@ -1,13 +1,21 @@
 #!/usr/bin/python3
 import json
-import os
+from os import path
 from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
 from models.user import User
-
+from models.state import State
+from models.user import User
+from datetime import datetime
 
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+    classe = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+              "Place": Place, "Review": Review, "State": State, "User": User}
 
     def all(self):
         return self.__objects
@@ -25,15 +33,11 @@ class FileStorage:
             json.dump(data, file)
 
     def reload(self):
+        """ deserializes the JSON file to __objects"""
         try:
-            with open(self.__file_path, "r") as file:
+            with open(self.__file-path, 'r') as file:
                 data = json.load(file)
-                for key, value in data.items():
-                    class_name, obj_id = key.split('.')
-                    class_obj = globals().get(class_name)
-                    if class_obj:
-                        instance = class_obj(**value)
-                        self.new(instance)
-        except FileNotFoundError:
+            for key in data: classmethod[data[key]["__class__"]](**data[key])
+        except Exception:
             pass
-
+       
