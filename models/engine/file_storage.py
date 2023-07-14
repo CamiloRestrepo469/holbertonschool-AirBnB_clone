@@ -47,8 +47,8 @@ class FileStorage:
                 for key, value in data.items():
                     class_name, obj_id = key.split('.')
                     class_obj = globals().get(class_name)
-                    if class_name in self.classes:
-                        class_obj = self.classes[class_name]
+                    if class_name in self.classe:
+                        class_obj = self.classe[class_name]
                         instance = class_obj(**value)
                         self.new(instance)
         except AttributeError:
