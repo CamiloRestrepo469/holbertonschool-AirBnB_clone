@@ -83,7 +83,6 @@ class TestFileStorage(unittest.TestCase):
         # Comprueba que el objeto se cargó correctamente
         objects = self.file_storage.all()
         self.assertEqual(len(objects), 3)
-        self.assertIn('BaseModel.123456', objects)
         self.assertIsInstance(objects['BaseModel.123456'], BaseModel)
         self.assertEqual(objects['BaseModel.123456'].id, '123456')
 
