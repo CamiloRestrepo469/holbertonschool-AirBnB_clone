@@ -83,8 +83,6 @@ class TestFileStorage(unittest.TestCase):
         # Comprueba que el objeto se cargó correctamente
         objects = self.file_storage.all()
         self.assertEqual(len(objects), 3)
-        self.assertEqual(len(objects), 11)
-        self.assertEqual(len(objects), 12)
 
 
 if __name__ == '__main__':
