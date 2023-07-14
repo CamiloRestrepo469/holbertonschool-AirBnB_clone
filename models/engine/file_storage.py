@@ -35,22 +35,11 @@ class FileStorage:
             json.dump(data, file)
 
     def reload(self):
-        """
-        Deserializes the JSON file to __objects (only if the JSON file
-        (__file_path) exists;
-        otherwise, do nothing. If the file doesn't exist, no exception
-        should be raised).
-        """
+        """ deserializes the JSON file to __objects"""
         try:
-            with open(self.__file_path, 'r') as file:
+            with open(self.__file-path, 'r') as file:
                 data = json.load(file)
-                for key, value in data.items():
-                    class_name, obj_id = key.split('.')
-                    class_obj = globals().get(class_name)
-                    if class_name in self.classe:
-                        class_obj = self.classe[class_name]
-                        instance = class_obj(**value)
-                        self.new(instance)
+            for key in data: classmethod[data[key]["__class__"]](**data[key])
         except AttributeError:
             pass
        
