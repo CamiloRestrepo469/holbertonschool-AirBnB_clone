@@ -39,7 +39,7 @@ class FileStorage:
         try:
             with open(self.__file-path, 'r') as file:
                 data = json.load(file)
-            for key in data: classmethod[data[key]["__class__"]](**data[key])
+            for key in data: self.classes[data[key]["__class__"]](**data[key])
         except AttributeError:
             pass
        
