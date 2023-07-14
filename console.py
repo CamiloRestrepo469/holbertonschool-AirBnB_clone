@@ -17,7 +17,7 @@ import shlex
 import re
 
 class_names_str = ["Amenity", "City",
-              "Place", "Review", "State",
+              "Place", "State",
     "BaseModel", "User"
     ]
 all_data = storage.all()
@@ -27,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
     """Command-line interface for the AIRBNB project."""
     
     classe = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-              "Place": Place, "Review": Review, "State": State, "User": User}
+              "Place": Place, "State": State, "User": User}
 
 
     # intro = "Welcome to the AIRBNB console command"
