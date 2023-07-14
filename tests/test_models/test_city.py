@@ -2,7 +2,7 @@
 """unittest for amenity"""
 import unittest
 from models.base_model import BaseModel
-from models import City
+from models.city import City
 from models.engine.file_storage import FilesStorage
 import os
 

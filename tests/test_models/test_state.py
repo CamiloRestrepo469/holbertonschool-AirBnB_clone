@@ -1,5 +1,5 @@
 import unittest
-from models import State
+from models.state import State
 
 
 class StateTest(unittest.TestCase):

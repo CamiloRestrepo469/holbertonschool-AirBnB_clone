@@ -1,5 +1,5 @@
 import unittest
-from models import Place
+from models.place import Place
 
 
 class PlaceTest(unittest.TestCase):

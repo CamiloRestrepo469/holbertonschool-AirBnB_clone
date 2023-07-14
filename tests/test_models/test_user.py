@@ -1,5 +1,5 @@
 import unittest
-from your_module import User
+from models.user import User
 
 
 class UserTest(unittest.TestCase):
