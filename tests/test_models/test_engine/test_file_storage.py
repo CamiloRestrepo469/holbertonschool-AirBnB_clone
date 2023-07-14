@@ -33,7 +33,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(len(objects), 2)
         self.assertIn(f'{obj1.__class__.__name__}.{obj1.id}', objects)
         self.assertIn(f'{obj2.__class__.__name__}.{obj2.id}', objects)
-    
+
     def test_save(self):
         # Agrega un objeto a la instancia de FileStorage
         obj = BaseModel()
@@ -44,10 +44,12 @@ class TestFileStorage(unittest.TestCase):
             self.file_storage.save()
 
             # Comprueba que la función open fue llamada con el archivo correcto
-            mock_file.assert_called_once_with(self.file_storage._FileStorage__file_path, 'w')
+            mock_file.assert_called_once_with(
+                self.file_storage._FileStorage__file_path, 'w')
 
             # Comprueba que se llamó a json.dump con los datos correctos
-            mock_file().write.assert_called_once_with(json.dumps({f'{obj.__class__.__name__}.{obj.id}': obj.to_dict()}))
+            mock_file().write.assert_called_once_with(json.dumps(
+                {f'{obj.__class__.__name__}.{obj.id}': obj.to_dict()}))
 
     def test_reload(self):
         # Crea un archivo JSON con un objeto guardado
@@ -61,9 +63,10 @@ class TestFileStorage(unittest.TestCase):
         with open(self.file_storage._FileStorage__file_path, 'w') as file:
             json.dump(data, file)
 
-        # Llama al método reload() para cargar los objetos en la instancia de FileStorage
+        """ Llama al método reload() para cargar los objetos en la
+        instancia de FileStorage"""
         self.file_storage.reload()
-        
+
         # Comprueba que el objeto se cargó correctamente
         objects = self.file_storage.all()
         self.assertEqual(len(objects), 1)
