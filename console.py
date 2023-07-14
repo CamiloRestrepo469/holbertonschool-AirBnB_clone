@@ -16,10 +16,10 @@ import inspect
 import shlex
 import re
 
-"""class_names_str = ["Amenity", "City",
+class_names_str = ["Amenity", "City",
               "Place", "Review","State",
     "BaseModel", "User"
-    ]"""
+    ]
 all_data = storage.all()
 
 
