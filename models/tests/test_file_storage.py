@@ -8,7 +8,7 @@ from models.user import User
 
 
 class TestFileStorage(unittest.TestCase):
-    
+
     def setUp(self):
         self.storage = FileStorage()
 
