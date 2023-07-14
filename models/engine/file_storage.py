@@ -11,14 +11,15 @@ from models.state import State
 from models.user import User
 from datetime import datetime
 
+
 class FileStorage:
-    
+
     classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-              "Place": Place, "Review": Review, "State": State, "User": User}
-    
+               "Place": Place, "Review": Review, "State": State, "User": User}
+
     __file_path = "file.json"
     __objects = {}
-    
+
     def all(self):
         return self.__objects
 
@@ -30,7 +31,7 @@ class FileStorage:
         data = {}
         for key, value in self.__objects.items():
             data[key] = value.to_dict()
-            
+
         with open(self.__file_path, 'w') as file:
             json.dump(data, file)
 
@@ -39,7 +40,7 @@ class FileStorage:
         try:
             with open(self.__file-path, 'r') as file:
                 data = json.load(file)
-            for key in data: self.classes[data[key]["__class__"]](**data[key])
+            for key in data:
+                self.classes[data[key]["__class__"]](**data[key])
         except AttributeError:
             pass
-       

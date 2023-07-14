@@ -17,6 +17,7 @@ class PlaceTest(unittest.TestCase):
         self.assertEqual(place.latitude, 0.0)
         self.assertEqual(place.longitude, 0.0)
         self.assertEqual(place.amenity_ids, [])
+
     def test_place_attributes(self):
         place = Place()
         place.city_id = "12345"
@@ -33,7 +34,8 @@ class PlaceTest(unittest.TestCase):
         self.assertEqual(place.city_id, "12345")
         self.assertEqual(place.user_id, "67890")
         self.assertEqual(place.name, "Cozy Cottage")
-        self.assertEqual(place.description, "A charming cottage in the countryside")
+        self.assertEqual(place.description,
+                         "A charming cottage in the countryside")
         self.assertEqual(place.number_rooms, 2)
         self.assertEqual(place.number_bathrooms, 1)
         self.assertEqual(place.max_guest, 4)

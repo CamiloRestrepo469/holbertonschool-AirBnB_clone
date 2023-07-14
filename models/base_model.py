@@ -9,9 +9,10 @@ date_time = "%Y-%m-%dT%H:%M:%S.%f"
 
 class BaseModel:
     """Base class for all models"""
+
     def __init__(self, *args, **kwargs):
         """Create a constructor"""
-        
+
         if kwargs:
             for key, value in kwargs.items():
                 if key in ['created_at', 'updated_at']:
@@ -25,6 +26,7 @@ class BaseModel:
             models.storage.new(self)
 
     """create update methods"""
+
     def update(self):
         self.updated_at = datetime.now()
 
@@ -44,6 +46,3 @@ class BaseModel:
         attributes['created_at'] = self.created_at.isoformat()
         attributes['updated_at'] = self.updated_at.isoformat()
         return attributes
-    
-
-        

@@ -9,6 +9,7 @@ class ReviewTest(unittest.TestCase):
         self.assertEqual(review.place_id, "")
         self.assertEqual(review.user_id, "")
         self.assertEqual(review.text, "")
+
     def test_review_attributes(self):
         review = Review()
         review.place_id = "12345"
@@ -22,4 +23,3 @@ class ReviewTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    

@@ -17,18 +17,17 @@ import shlex
 import re
 
 class_names_str = ["Amenity", "City",
-              "Place", "Review","State",
-    "BaseModel", "User"
-    ]
+                   "Place", "Review", "State",
+                   "BaseModel", "User"
+                   ]
 all_data = storage.all()
 
 
 class HBNBCommand(cmd.Cmd):
     """Command-line interface for the AIRBNB project."""
-    
+
     classe = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
               "Place": Place, "State": State, "User": User, 'Review': Review}
-
 
     # intro = "Welcome to the AIRBNB console command"
     prompt = "(hbnb) "
@@ -44,13 +43,13 @@ class HBNBCommand(cmd.Cmd):
         Handle the end-of-file event (Ctrl+D).
         """
         return True
-    
+
     def emptyline(self):
         """
         Do nothing when an empty line is entered.
         """
         pass
-    
+
     def help_quit(self):
         """
         Display help message for quit command.
@@ -62,13 +61,12 @@ class HBNBCommand(cmd.Cmd):
         Display help message for EOF command.
         """
         print("Exit the console with EOF (Ctrl+D).")
-        
+
     def help_help(self):
         """
         Display help message for help command.
         """
         print("Display help information.")
-
 
     def do_create(self, args: str) -> None:
         """
