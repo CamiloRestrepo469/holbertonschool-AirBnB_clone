@@ -16,7 +16,7 @@ class testAmenity(unittest.TestCase):
 
     def test_attr(self):
         """test attributes correct types"""
-        self.assertIs(self.amenity.name, st())
+        self.assertIs(self.amenity.name, str())
 
     def test_str(self):
         """test str method"""

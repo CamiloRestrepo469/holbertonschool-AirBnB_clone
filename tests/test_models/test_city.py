@@ -22,8 +22,8 @@ class TestCity(unittest.TestCase):
     def test_str(self):
         """test str method"""
         amenity = City()
-        string = "[City]({}){}".format(city.id, city.__dict__)
-        self.assertEqual(string, str(city))
+        string = "[City]({}){}".format(City.state_id, City.__dict__)
+        self.assertEqual(string, str(City))
 
 
 if __name__ == "__main__":

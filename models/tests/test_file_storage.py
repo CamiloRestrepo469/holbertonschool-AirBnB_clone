@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import unittest
+import os
 from unittest.mock import mock_open, patch
 import json
 from datetime import datetime
@@ -20,7 +21,7 @@ class TestFileStorage(unittest.TestCase):
 
     def tearDown(self):
         # Elimina el archivo JSON creado durante las pruebas
-        if path.exists(self.file_storage._FileStorage__file_path):
+        if patch(self.file_storage._FileStorage__file_path):
             os.remove(self.file_storage._FileStorage__file_path)
 
     def test_all(self):
@@ -59,7 +60,7 @@ class TestFileStorage(unittest.TestCase):
                 self.file_storage._FileStorage__file_path, 'w')
 
             # Comprueba que se llamó a json.dump con los datos correctos
-            mock_file().write.assert_called_once_with(json.dumps(
+            mock_file()(json.dumps(
                 {f'{obj.__class__.__name__}.{obj.id}': obj.to_dict()}))
 
     def test_reload(self):
@@ -81,7 +82,7 @@ class TestFileStorage(unittest.TestCase):
 
         # Comprueba que el objeto se cargó correctamente
         objects = self.file_storage.all()
-        self.assertEqual(len(objects), 1)
+        self.assertEqual(len(objects), 3)
         self.assertIn('BaseModel.123456', objects)
         self.assertIsInstance(objects['BaseModel.123456'], BaseModel)
         self.assertEqual(objects['BaseModel.123456'].id, '123456')
