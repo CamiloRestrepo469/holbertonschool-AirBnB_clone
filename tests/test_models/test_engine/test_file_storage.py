@@ -67,6 +67,10 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(self.storage.reload(), None)
         os.remove('file.json')
 
+        # Comprueba que el objeto se cargó correctamente
+        objects = self.file_storage.all()
+        self.assertEqual(len(objects), 3)
+
 
 if __name__ == '__main__':
     unittest.main()
