@@ -57,8 +57,16 @@ class TestFileStorage(unittest.TestCase):
         self.assertNotEqual(data, "")
 
     def test_reload(self):
-        self.assertEqual(self.storage.reload(), None)
-        os.remove('file.json')
+        """
+        Test that reload() method reloads the objects from the file.
+        """
+        my_model = BaseModel()
+        self.storage.new(my_model)
+        self.storage.save()
+        self.storage.reload()
+        all_objs = self.storage.all()
+        key = "{}.{}".format(type(my_model).__name__, my_model.id)
+        self.assertIn(key, all_objs)
 
 
 class TestBaseModel(unittest.TestCase):
