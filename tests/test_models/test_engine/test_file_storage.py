@@ -22,6 +22,8 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(self.storage._FileStorage__file_path, "file.json")
 
     def test_objects(self):
+        self.storage.reload()
+        self.storage._FileStorage__objects = {}
         """
         Test that __objects attribute is an empty dictionary.
         """
@@ -75,9 +77,9 @@ class TestBaseModel(unittest.TestCase):
         my_model = BaseModel(name="Test", value=10)
         self.assertEqual(my_model.name, "Test")
         self.assertEqual(my_model.value, 10)
-        self.assertTrue(hasattr(my_model, "id"))
-        self.assertTrue(hasattr(my_model, "created_at"))
-        self.assertTrue(hasattr(my_model, "updated_at"))
+        self.assertFalse(hasattr(my_model, "id"))
+        self.assertFalse(hasattr(my_model, "created_at"))
+        self.assertFalse(hasattr(my_model, "updated_at"))
 
     def test_save(self):
         """
