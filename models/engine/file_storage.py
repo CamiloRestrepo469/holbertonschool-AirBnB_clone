@@ -10,13 +10,11 @@ from models.user import User
 from models.state import State
 from models.user import User
 from datetime import datetime
+import os
 
 
 class FileStorage:
-
-    classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-               "Place": Place, "Review": Review, "State": State, "User": User}
-
+    
     __file_path = "file.json"
     __objects = {}
 
@@ -36,11 +34,10 @@ class FileStorage:
             json.dump(data, file)
 
     def reload(self):
-        """ deserializes the JSON file to __objects"""
-        try:
-            with open(self.__file-path, 'r') as file:
-                data = json.load(file)
-            for key in data:
-                self.classes[data[key]["__class__"]](**data[key])
-        except AttributeError:
-            pass
+        if os.path.isfile(FileStorage.__file_path):
+            with open(FileStorage.__file_path) as file:
+                loaded = json.load(file)
+                for k, v in loaded.items():
+                    class_name = v['__class__']
+                    obj = eval(class_name)(**v)
+                    self.__objects[k] = obj

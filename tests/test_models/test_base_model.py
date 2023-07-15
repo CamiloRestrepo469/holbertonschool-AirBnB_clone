@@ -46,6 +46,12 @@ class TestBaseModel(unittest.TestCase):
             self.base_model.save()
             # Comprueba que se llamó al método save de models.storage
             mock_save.assert_called_once()
+            
+    def test_str(self):
+        class_name = self.base_model.__class__.__name__
+        expected_output = "[{}] ({}) {}".format(
+            class_name, self.base_model.id, self.base_model.__dict__)
+        self.assertEqual(str(self.base_model), expected_output)
 
     def test_to_dict(self):
         # Establece atributos en el modelo
