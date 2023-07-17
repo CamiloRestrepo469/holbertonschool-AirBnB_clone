@@ -68,7 +68,6 @@ class TestFileStorage(unittest.TestCase):
         key = "{}.{}".format(type(my_model).__name__, my_model.id)
         self.assertIn(key, all_objs)
 
-
 class TestBaseModel(unittest.TestCase):
     def test_init(self):
         """

@@ -24,14 +24,13 @@ This is the first step towards building your first full web application: the Air
 | base_model.py | defines all common attributes/methods for other classes. |
 | models/engine | Package with in storage file. |
 | file_storage.py | Class FileStorage. serializes/deserializes instances to a JSON file. |
+| amenity.py |  Class Amenity. |
+| city.py |  |
+| place.py |  |
+| review.py |  |
+| state.py |  |
+| user.py |  |
 | tests/ | Directory with class tests. |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-| | |
 
 ## Console description. 📋
 
