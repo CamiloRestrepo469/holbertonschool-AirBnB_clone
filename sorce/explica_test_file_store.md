@@ -1,4 +1,3 @@
-¡Claro! Aquí tienes la explicación de la lógica de cada prueba unitaria:
 
 1. `test_file_path`: Prueba que el atributo `__file_path` esté configurado correctamente. Compara el valor del atributo `__file_path` de la instancia `FileStorage` con la cadena esperada.
 
@@ -20,4 +19,3 @@
 
 En general, estas pruebas aseguran que la funcionalidad básica de `FileStorage` y `BaseModel` esté implementada correctamente y que los métodos y atributos se comporten como se espera.
 
-Espero que esta explicación te sea útil. Si tienes más preguntas, no dudes en hacerlas.

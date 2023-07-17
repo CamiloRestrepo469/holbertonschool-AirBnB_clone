@@ -2,6 +2,10 @@
 """Create a Class HBNBCommand"""
 
 import cmd
+import json
+import models
+from models import storage
+from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):
@@ -9,11 +13,12 @@ class HBNBCommand(cmd.Cmd):
     Entry point of the command interpreter.
     """
 
-    prompt = '(hbnb) '
+    prompt = "(hbnb) "
+    classes = {'BaseModel': BaseModel}
 
     def do_quit(self, arg):
         """
-        Quit the console.
+        Quit command to exit the program
         """
         return True
 
@@ -49,5 +54,20 @@ class HBNBCommand(cmd.Cmd):
         print("Display help information.")
 
 
-if __name__ == '__main__':
+    def do_create(self, arg):
+        """Create a new instance of BaseModel"""
+        if not arg:
+            print("** class name missing **")
+            return
+        class_name = arg.split()[0]
+        if class_name not in storage.classes.keys():
+            print("** class doesn't exist **")
+            return
+        instance = storage.classes[class_name]()
+        instance.save()
+        print(instance.id)
+
+
+
+if __name__ == "__main__":
     HBNBCommand().cmdloop()
