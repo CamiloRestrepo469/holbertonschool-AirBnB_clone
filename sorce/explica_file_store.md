@@ -1,8 +1,4 @@
 
-```python
-#!/usr/bin/python3
-```
-Esta línea especifica el intérprete de Python que se utilizará para ejecutar el script.
 
 ```python
 import json
@@ -64,4 +60,3 @@ Este método carga los datos almacenados previamente en el archivo JSON especifi
 
 Si ocurre una excepción `FileNotFoundError`, significa que el archivo no existe, por lo que se pasa sin realizar ninguna acción.
 
-Espero que esta explicación te haya ayudado a comprender el código. Si tienes alguna otra pregunta, ¡no dudes en preguntar!

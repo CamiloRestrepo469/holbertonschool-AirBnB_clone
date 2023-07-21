@@ -1,10 +1,20 @@
 #!/usr/bin/python3
 import json
-import os
+from os import path
 from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.user import User
+from models.state import State
+from models.user import User
+from datetime import datetime
+import os
 
 
 class FileStorage:
+    
     __file_path = "file.json"
     __objects = {}
 
@@ -16,23 +26,16 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        data = {}
-        for key, value in self.__objects.items():
-            data[key] = value.to_dict()
-            
-        with open(self.__file_path, 'w') as file:
-            json.dump(data, file)
+        """"Serializes __objects to the JSON file (path: __file_path)"""
+        with open(FileStorage.__file_path, "w", encoding="UTF-8") as file:
+            dic = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
+            json.dump(dic, file, indent=4)
 
     def reload(self):
-        try:
-            with open(self.__file_path, "r") as file:
-                data = json.load(file)
-                for key, value in data.items():
-                    class_name, obj_id = key.split('.')
-                    class_obj = globals().get(class_name)
-                    if class_obj:
-                        instance = class_obj(**value)
-                        self.new(instance)
-        except FileNotFoundError:
-            pass
-
+        if os.path.isfile(FileStorage.__file_path):
+            with open(FileStorage.__file_path) as file:
+                loaded = json.load(file)
+                for k, v in loaded.items():
+                    class_name = v['__class__']
+                    obj = eval(class_name)(**v)
+                    self.__objects[k] = obj

@@ -4,13 +4,15 @@ from datetime import datetime
 import models
 
 """create a new class BaseModel"""
+date_time = "%Y-%m-%dT%H:%M:%S.%f"
 
 
 class BaseModel:
     """Base class for all models"""
+
     def __init__(self, *args, **kwargs):
         """Create a constructor"""
-        
+
         if kwargs:
             for key, value in kwargs.items():
                 if key in ['created_at', 'updated_at']:
@@ -24,15 +26,24 @@ class BaseModel:
             models.storage.new(self)
 
     """create update methods"""
+
     def update(self):
         self.updated_at = datetime.now()
+        
+    """create save methods"""
+
 
     def save(self):
         self.update()
         models.storage.save()
 
+    """create str """
+
     def __str__(self):
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+    
+    
+    """create to_dict methods"""
 
     def to_dict(self):
         attributes = {
@@ -43,6 +54,3 @@ class BaseModel:
         attributes['created_at'] = self.created_at.isoformat()
         attributes['updated_at'] = self.updated_at.isoformat()
         return attributes
-    
-
-        

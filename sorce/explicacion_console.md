@@ -1,7 +1,5 @@
 ## explicacion 
 
-Voy a explicar el código línea por línea, explicando la lógica detrás de cada una de las importaciones, clases y funciones utilizadas.
-
 ```python
 import cmd
 ```
